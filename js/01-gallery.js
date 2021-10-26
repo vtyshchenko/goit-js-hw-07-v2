@@ -71,15 +71,15 @@ function onClickPicture(e) {
       {
         onShow: (instance) => {
           const elem = instance.element();
-          elem.innerHTML += `<button type="button" title="Close" class="slbCloseBtn">×</button>
-            <div class="slbArrows">
-              <button type="button" title="Previous" class="prev slbArrow">
+          elem.innerHTML += `<button type="button" title="Close" class="basicLightbox__nav--close-btn">×</button>
+            <div class="basicLightbox__nav">
+              <button type="button" title="Previous" class="prev basicLightbox__nav--arrow">
                 Previous</button
-              ><button type="button" title="Next" class="next slbArrow">Next</button>
+              ><button type="button" title="Next" class="next basicLightbox__nav--arrow">Next</button>
             </div>`;
 
-          navButtons = elem.querySelector(".slbArrows");
-          closeButton = elem.querySelector(".slbCloseBtn");
+          navButtons = elem.querySelector(".basicLightbox__nav");
+          closeButton = elem.querySelector(".basicLightbox__nav--close-btn");
 
           navButtons.addEventListener("click", onClickButton);
           closeButton.addEventListener("click", onCloseButton);
@@ -99,7 +99,6 @@ function onClickPicture(e) {
 }
 
 function onClickButton(e) {
-  console.log(e);
   if (e.target.classList.contains("next")) {
     idx = getImageForView(idx, 1);
   } else if (e.target.classList.contains("prev")) {

@@ -42,3 +42,72 @@
 .gallery__link:hover {
   cursor: zoom-in;
 }
+
+.basicLightbox__nav {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+}
+
+.basicLightbox__nav--close-btn {
+  -webkit-animation: slbEnter 0.3s;
+  -moz-animation: slbEnter 0.3s;
+  animation: slbEnter 0.3s;
+  font-size: 3em;
+  width: 1.66667em;
+  height: 1.66667em;
+  line-height: 1.66667em;
+  position: absolute;
+  right: -0.33333em;
+  top: 0;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+.basicLightbox__nav--close-btn,
+.basicLightbox__nav--arrow {
+  margin: 0;
+  margin-top: 0px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: none;
+}
+
+.basicLightbox__nav--arrow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -0.8em 0 0 -0.8em;
+  border: 0.8em solid transparent;
+  border-right-color: transparent;
+}
+
+.basicLightbox__nav--arrow {
+  position: absolute;
+  top: 50%;
+  margin-top: -5em;
+  width: 5em;
+  height: 10em;
+  opacity: 0.7;
+  text-indent: -999em;
+  overflow: hidden;
+}
+
+.basicLightbox__nav--arrow.prev::before {
+  border-right-color: #fff;
+}
+
+.basicLightbox__nav--arrow.prev {
+  left: 0;
+}
+
+.basicLightbox__nav--arrow.next::before {
+  border-left-color: #fff;
+}
+.basicLightbox__nav--arrow.next {
+  right: 0;
+}
