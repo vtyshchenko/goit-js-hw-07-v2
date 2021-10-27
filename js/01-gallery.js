@@ -30,6 +30,79 @@ function createMarkup() {
   return markup;
 }
 
+function getImageForView(number, step) {
+  const element = newInstance.element();
+  number += step;
+  if (number < 0) {
+    number = galleryItems.length - 1;
+  } else if (number === galleryItems.length) {
+    number = 0;
+  }
+  element.firstElementChild.children[0].src = galleryItems[number].original;
+  element.firstElementChild.children[0].alt = galleryItems[number].description;
+
+  return number;
+}
+
+function lightboxButtonsAdd(instance) {
+  const elem = instance.element();
+  elem.innerHTML += `<button type="button" title="Close" class="basicLightbox__nav--close-btn">×</button>
+      <div class="basicLightbox__nav">
+        <button type="button" title="Previous" class="prev basicLightbox__nav--arrow">
+          Previous</button
+        ><button type="button" title="Next" class="next basicLightbox__nav--arrow">Next</button>
+      </div>`;
+
+  navButtons = elem.querySelector(".basicLightbox__nav");
+  closeButton = elem.querySelector(".basicLightbox__nav--close-btn");
+}
+
+function lightboxListenersAdd() {
+  closeButton.addEventListener("click", onCloseButton);
+  navButtons.addEventListener("click", onClickButton);
+  window.addEventListener("keyup", onKeyPress);
+}
+
+function lightboxListenersRemove() {
+  closeButton.removeEventListener("click", onCloseButton);
+  navButtons.removeEventListener("click", onClickButton);
+  window.removeEventListener("keyup", onKeyPress);
+}
+
+function onClickButton(e) {
+  if (e.target.classList.contains("next")) {
+    idx = getImageForView(idx, 1);
+  } else if (e.target.classList.contains("prev")) {
+    idx = getImageForView(idx, -1);
+  }
+}
+
+function onClickPicture(e) {
+  e.preventDefault();
+  if (e.target.tagName === "IMG") {
+    idx = Number(e.target.attributes.id.value.substring(1));
+
+    newInstance = basicLightbox.create(
+      `<img src="${galleryItems[idx].original}" alt="${galleryItems[idx].description}">`,
+      {
+        onShow: (instance) => {
+          lightboxButtonsAdd(instance);
+          lightboxListenersAdd();
+        },
+        onClose: (instance) => {
+          lightboxListenersRemove();
+        },
+      }
+    );
+
+    newInstance.show();
+  }
+}
+
+function onCloseButton(e) {
+  newInstance.close();
+}
+
 function onKeyPress(event) {
   switch (event.key) {
     case "Esc":
@@ -45,67 +118,4 @@ function onKeyPress(event) {
       idx = getImageForView(idx, 1);
       break;
   }
-}
-
-function getImageForView(number, step) {
-  const element = newInstance.element();
-  number += step;
-  if (number < 0) {
-    number = galleryItems.length - 1;
-  } else if (number === galleryItems.length) {
-    number = 0;
-  }
-  element.firstElementChild.children[0].src = galleryItems[number].original;
-  element.firstElementChild.children[0].alt = galleryItems[number].description;
-
-  return number;
-}
-
-function onClickPicture(e) {
-  e.preventDefault();
-  if (e.target.tagName === "IMG") {
-    idx = Number(e.target.attributes.id.value.substring(1));
-
-    newInstance = basicLightbox.create(
-      `<img src="${galleryItems[idx].original}" alt="${galleryItems[idx].description}">`,
-      {
-        onShow: (instance) => {
-          const elem = instance.element();
-          elem.innerHTML += `<button type="button" title="Close" class="basicLightbox__nav--close-btn">×</button>
-            <div class="basicLightbox__nav">
-              <button type="button" title="Previous" class="prev basicLightbox__nav--arrow">
-                Previous</button
-              ><button type="button" title="Next" class="next basicLightbox__nav--arrow">Next</button>
-            </div>`;
-
-          navButtons = elem.querySelector(".basicLightbox__nav");
-          closeButton = elem.querySelector(".basicLightbox__nav--close-btn");
-
-          navButtons.addEventListener("click", onClickButton);
-          closeButton.addEventListener("click", onCloseButton);
-
-          window.addEventListener("keyup", onKeyPress);
-        },
-        onClose: (instance) => {
-          navButtons.removeEventListener("click", onClickButton);
-          closeButton.removeEventListener("click", onCloseButton);
-          window.removeEventListener("keyup", onKeyPress);
-        },
-      }
-    );
-
-    newInstance.show();
-  }
-}
-
-function onClickButton(e) {
-  if (e.target.classList.contains("next")) {
-    idx = getImageForView(idx, 1);
-  } else if (e.target.classList.contains("prev")) {
-    idx = getImageForView(idx, -1);
-  }
-}
-
-function onCloseButton(e) {
-  newInstance.close();
 }
